@@ -1,0 +1,45 @@
+{% extends 'Base/base.html' %}
+
+
+{% block catagory %}
+<a class="dropdown-item" href="#">ELECTRONIES</a>
+<a class="dropdown-item" href="#">ENTERTAINMENT</a>
+<a class="dropdown-item" href="#">STYLE</a>
+<a class="dropdown-item" href="#">OTHERS</a>
+
+
+{% endblock catagory %}
+
+
+{% block content %}
+<form method="POST" action=" {% url 'addproducts' %} " enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="container">
+
+
+<br><br> <br>
+    <hr>
+  <i class="fas fa-people-carry"> <label for="text"><b> Product Name </b></label> </i><br>
+     {{ form.product_name }} <br>
+      <i class="fas fa-dollar-sign">  <label for="rate"><b> Cost Per day</b></label> </i>
+      <div class="rateperday">
+           {{ form.product_rate }}
+          <br>
+      </div>
+  <div class="product_catagory">
+<i class="fas fa-check-circle"> <label for="rate"><b>Choose a catagory</b></label></i><br>
+      {{ form.product_catagory }}
+  </div>
+        <div class="rules">
+      <i class="fa fa-book" aria-hidden="true"><label for="rate"><b> <br>Rules & Regulations</b></label></i> <br>
+      {{ form.product_rules }}
+        </div>
+   <br>
+      <i class="far fa-image"><label for="image"><b>Product Image</b></label></i><br>
+     {{ form.product_image }}
+      <hr>
+    <button type="submit" class="registerbtn">Submit</button>
+  </div>
+</form>
+{%  endblock %}
+
