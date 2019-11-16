@@ -1,6 +1,7 @@
 {% extends 'Base/base.html' %}
 {% load static %}
-
+{% load socialaccount %}
+{% providers_media_js %}
 {% block links %}
 
  <link rel="stylesheet" href=" {% static 'accounts/fonts/material-icon/css/material-design-iconic-font.min.css' %} ">
@@ -40,7 +41,7 @@
                             <div class="form-group">
                                 <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
                                 <input type="password" name="password" id="your_pass" placeholder="Password"/>
-                            </div>
+                            </div>s
                             <div class="form-group">
                                 <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
                                 <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
@@ -52,9 +53,9 @@
                         <div class="social-login">
                             <span class="social-label">Or login with</span>
                             <ul class="socials">
-                                <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
+                                <li><a href="{% provider_login_url 'facebook' method='oauth2' %} "><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
                                 <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
-                                <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
+                                <li><a href="{% provider_login_url 'google' %}"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
                             </ul>
                         </div>
                     </div>
