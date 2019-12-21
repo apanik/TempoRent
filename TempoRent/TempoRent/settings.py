@@ -20,6 +20,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'graphviz',
+    'django_extensions',
+    'mathfilters',
     'accountsapp',
     'productapp',
     'django.contrib.admin',
@@ -29,7 +32,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
-
+    'django_twilio',
+    
+    'phonenumbers',
 
 
     'django.contrib.sites',
@@ -132,5 +137,7 @@ os.path.join(BASE_DIR, "static"),
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 SITE_ID = 1
+
+
 LOGIN_REDIRECT_URL = 'products'
 

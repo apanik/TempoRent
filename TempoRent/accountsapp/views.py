@@ -1,16 +1,30 @@
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.contrib.auth.models import User,auth
-from django.http import HttpResponse
+import os
+from twilio.rest import Client
+from random import randint
 
 
+# Your Account SID from twilio.com/console
+account_sid = "ACe8198d42a9212868c6c25779bdbc4257"
+# Your Auth Token from twilio.com/console
+auth_token  = "2e1e1eec7ce0c7a591f0c127e313294c"
+
+def GenerateRandomNumber():
+    number = randint(1000, 9999)
+    return number
+Vcode1 = GenerateRandomNumber()
+VCode = Vcode1
 
 def sign_up(request):
+
     if request.method == "POST":
         username = request.POST['username']
         email = request.POST['email']
         password = request.POST['password']
         password1 =request.POST['password1']
+
 
         if password == password1:
             if User.objects.filter(username = username).exists():
@@ -20,19 +34,39 @@ def sign_up(request):
                 messages.warning(request,"email taken")
                 return render(request,'accounts/userregistration.html')
             else:
-                user = User.objects.create_user(username = username, email = email, password = password)
-                user.save()
-                messages.success(request,"user created successfull")
-                print("user created")
-                return redirect('register')
-                return HttpResponse('')
+            
+                client = Client(account_sid, auth_token)
+                message = client.messages.create(
+                       to="+8801784009080", 
+                       from_="+14109211122",
+                       body="Hello {}, Your verification number  {}".format(username,VCode)
+                       )
+
+                context={
+                    'username':username,
+                    'email':email,
+                    'password':password,
+                }
+
+
+
+                return render(request,'accounts/verify.html',context)
+               
+                
         else:
             messages.warning(request,"Password not matched")
-            print(messages)
+
             return render(request,'accounts/userregistration.html')
 
     else:
+         
         return render(request,'accounts/userregistration.html')
+
+def register(request):
+         
+       return render(request,'accounts/verify.html')
+
+    
 
 
 def sign_in(request):
@@ -47,7 +81,7 @@ def sign_in(request):
             return redirect('addproducts')
 
         else:
-            print("user not exist")
+
             return render(request,'accounts/userlogin.html')
     else:
         return render(request,'accounts/userlogin.html')
@@ -56,6 +90,37 @@ def logout(request):
     auth.logout(request)
     return redirect('login')
 
+
+def verify(request):
+    if request.method == 'POST':
+        one = request.POST['one']
+        two = request.POST['two']
+        three = request.POST['three']
+        four = request.POST['four']
+        five = request.POST['five']
+        five = five.split(',')
+        username = five[0]
+        email = five[1]
+        password = five[2]
+        value = int(one+two+three+four)
+        if VCode == value:
+            user = User.objects.create_user(username=username, email=email, password=password)
+            user.save()
+            messages.success(request,"Account Created")
+            return render(request, 'accounts/userlogin.html')
+
+        else:
+            return render(request, 'accounts/userregistration.html')
+
+
+
+
+
+        return render(request,'accounts/verify.html')
+
+    else:
+
+        return render(request,'accounts/verify.html')
 
 
     
