@@ -18,13 +18,11 @@ Vcode1 = GenerateRandomNumber()
 VCode = Vcode1
 
 def sign_up(request):
-
     if request.method == "POST":
         username = request.POST['username']
         email = request.POST['email']
         password = request.POST['password']
         password1 =request.POST['password1']
-
 
         if password == password1:
             if User.objects.filter(username = username).exists():
@@ -34,7 +32,6 @@ def sign_up(request):
                 messages.warning(request,"email taken")
                 return render(request,'accounts/userregistration.html')
             else:
-            
                 client = Client(account_sid, auth_token)
                 message = client.messages.create(
                        to="+8801784009080", 
@@ -47,41 +44,27 @@ def sign_up(request):
                     'email':email,
                     'password':password,
                 }
-
-
-
-                return render(request,'accounts/verify.html',context)
-               
-                
+                return render(request,'accounts/verify.html',context)         
         else:
             messages.warning(request,"Password not matched")
-
             return render(request,'accounts/userregistration.html')
-
     else:
-         
         return render(request,'accounts/userregistration.html')
-
-def register(request):
-         
-       return render(request,'accounts/verify.html')
-
     
+    
+def register(request):         
+       return render(request,'accounts/verify.html')
 
 
 def sign_in(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-
         user = auth.authenticate(username = username, password =password)
-
         if user is not None:
             auth.login(request,user)
             return redirect('addproducts')
-
         else:
-
             return render(request,'accounts/userlogin.html')
     else:
         return render(request,'accounts/userlogin.html')
@@ -108,18 +91,10 @@ def verify(request):
             user.save()
             messages.success(request,"Account Created")
             return render(request, 'accounts/userlogin.html')
-
         else:
             return render(request, 'accounts/userregistration.html')
-
-
-
-
-
         return render(request,'accounts/verify.html')
-
     else:
-
         return render(request,'accounts/verify.html')
 
 
